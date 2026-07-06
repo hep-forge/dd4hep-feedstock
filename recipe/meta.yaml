@@ -95,7 +95,7 @@ test:
     - test -f "${PREFIX}/lib/libDDG4.so"
     - test -f "${PREFIX}/lib/libDDG4HepEm.so"
     - test -f "${PREFIX}/include/DD4hep/DetectorChecksum.h"
-    - test -f "${PREFIX}/lib/cmake/DD4hep/DD4hepConfig.cmake"
+    - test -f "${PREFIX}/cmake/DD4hepConfig.cmake"
 
 about:
   home: "https://dd4hep.web.cern.ch/dd4hep/"
