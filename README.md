@@ -5,11 +5,21 @@
 [![Anaconda Version](https://anaconda.org/hep-forge/dd4hep/badges/version.svg)](https://anaconda.org/hep-forge/dd4hep)
 [![Anaconda Platforms](https://anaconda.org/hep-forge/dd4hep/badges/platforms.svg)](https://anaconda.org/hep-forge/dd4hep)
 
-Feedstock for [dd4hep](https://github.com/AIDASoft/DD4hep) — part of [hep-forge](https://anaconda.org/hep-forge).
+Feedstock for [dd4hep](https://dd4hep.web.cern.ch/dd4hep/) — part of [hep-forge](https://anaconda.org/hep-forge).
 Builds linux-amd64 + linux-arm64 in one matrix workflow and uploads to the
 [hep-forge](https://anaconda.org/hep-forge) Anaconda channel.
 
 Detector Description Toolkit for High Energy Physics
+
+## Architectures
+
+| Architecture | Latest published |
+|--------------|------------------|
+| linux-amd64 (`linux-64`) | ✅ `1.37` |
+| linux-arm64 (`linux-aarch64`) | ✅ `1.37` |
+
+_As of the last feedstock render; the badges above are live._
+
 
 ## Install
 
@@ -20,3 +30,4 @@ conda install -c hep-forge -c conda-forge dd4hep
 ## Maintainers
 
 * [@meiyasan](https://github.com/meiyasan/)
+
