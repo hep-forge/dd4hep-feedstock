@@ -1,12 +1,27 @@
+# python pinned to match ROOT's own build: hep-forge's root packages
+# are published for one python per version family (6.34/6.36/6.38 ->
+# 3.12, 6.32 -> 3.10); without this pin, conda-build tries conda-forge's
+# global default python matrix (3.9-3.13), and any slot ROOT wasn't
+# built for is unsatisfiable under strict channel priority (it won't
+# fall back to conda-forge's own differently-versioned root package).
+python:
+  - "3.12"
+
 c_stdlib:
   - sysroot                    # [linux]
   - macosx_deployment_target   # [osx]
 
-c_stdlib_version:
-  - 2.17  # [linux]
-  - 11.0  # [osx]
+c_stdlib_version:              # [unix]
+  - 2.17                       # [linux]
+  - 11.0                       # [osx]
 
 c_compiler:
   - gcc
 cxx_compiler:
   - gxx
+
+# must match hepmc/edm4hep/podio's own root build (all root638) --
+# dd4hep pins `hepmc>=3.2.6 root{{ root_tag }}` etc, so a mismatched
+# root variant here would be unsatisfiable at solve time.
+root:
+  - 6.38

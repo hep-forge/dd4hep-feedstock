@@ -1,0 +1,13 @@
+diff --git a/DDG4/python/DDSim/Helper/Meta.py b/DDG4/python/DDSim/Helper/Meta.py
+index a34e8f710..6f29b3ec9 100644
+--- a/DDG4/python/DDSim/Helper/Meta.py
++++ b/DDG4/python/DDSim/Helper/Meta.py
+@@ -108,7 +108,7 @@ def addParametersToRunHeader(sim):
+     import getpass
+     try:
+         runHeader["User"] = getpass.getuser()
+-    except KeyError:
++    except (KeyError, OSError):
+         runHeader["User"] = str(os.getuid())
+ 
+     return runHeader

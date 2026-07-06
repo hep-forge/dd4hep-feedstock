@@ -1,0 +1,14 @@
+--- a/DDCore/CMakeLists.txt	2026-07-06 09:02:32.250549534 +0900
++++ b/DDCore/CMakeLists.txt	2026-07-06 09:04:32.174445163 +0900
+@@ -146,6 +146,11 @@
+   DESTINATION include
+   )
+ 
++# DetectorChecksum.h lives under src/plugins (not include/) but downstream
++# consumers (e.g. key4hep's k4geo/epic) include it directly; install it
++# alongside the rest of the DD4hep public headers.
++install(FILES src/plugins/DetectorChecksum.h DESTINATION include/DD4hep)
++
+ set_target_properties(DDCore DDCorePlugins PROPERTIES VERSION ${DD4hep_VERSION} SOVERSION ${DD4hep_SOVERSION})
+ install(TARGETS DDCore EXPORT DD4hep
+   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
