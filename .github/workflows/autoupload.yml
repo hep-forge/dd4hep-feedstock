@@ -256,6 +256,12 @@ jobs:
           "${{ steps.conda.outputs.PREFIX }}/bin/conda" config --add channels defaults
           "${{ steps.conda.outputs.PREFIX }}/bin/conda" config --add channels conda-forge
           "${{ steps.conda.outputs.PREFIX }}/bin/conda" config --add channels hep-forge
+          # geant (the eic/geant4 eAST-physics-list fork) is published
+          # under the "eic" label, not "main" -- this feedstock builds
+          # against it, so needs that label's channel too. Only added
+          # here (not the shared scripts/templates/autoupload.yml) since
+          # most feedstocks don't need it.
+          "${{ steps.conda.outputs.PREFIX }}/bin/conda" config --add channels hep-forge/label/eic
 
       - name: Build Package
         env:
