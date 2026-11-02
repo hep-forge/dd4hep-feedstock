@@ -16,9 +16,9 @@ c_stdlib_version:              # [unix]
   - 11.0                       # [osx]
 
 c_compiler:
-  - gcc
+  - gcc                      # [linux]
 cxx_compiler:
-  - gxx
+  - gxx                      # [linux]
 
 # must match hepmc/edm4hep/podio's own root build (all root638) --
 # dd4hep pins `hepmc>=3.2.6 root{{ root_tag }}` etc, so a mismatched
@@ -41,10 +41,10 @@ root:
 # effect (14 defaults to gnu++17); source that requires a particular
 # standard should set CMAKE_CXX_STANDARD explicitly as well.
 c_compiler_version:    # [linux]
-  - 14
+  - 14                       # [linux]
 cxx_compiler_version:  # [linux]
-  - 14
+  - 14                       # [linux]
 libgcc_version:        # [linux]
-  - 14.*
+  - 14.*                     # [linux]
 libstdcxx_version:     # [linux]
-  - 14.*
+  - 14.*                     # [linux]
