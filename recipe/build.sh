@@ -38,7 +38,13 @@ cmake .. "${EXTRA_ARGS[@]}" \
   -DDD4HEP_RELAX_PYVER=ON \
   -DPython_EXECUTABLE="${PREFIX}/bin/python" \
   -DPython_ROOT_DIR="${PREFIX}" \
-  -DPython_FIND_STRATEGY=LOCATION
+  -DPython_FIND_STRATEGY=LOCATION || {
+  # every CMake probe failed on macOS without saying why: show the reason
+  if [[ "$(uname)" == "Darwin" ]]; then
+    grep -B2 -A40 -m3 'CXX_FLAG_WORKS__Wshadow' CMakeFiles/CMakeConfigureLog.yaml | tail -120 || true
+  fi
+  exit 1
+}
 
 NPROC=$(nproc 2>/dev/null || sysctl -n hw.ncpu)
 make -j"$NPROC"
