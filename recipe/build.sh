@@ -10,7 +10,14 @@ export CXXFLAGS="${CXXFLAGS} -fno-merge-constants"
 mkdir -p build
 cd build
 
-cmake .. \
+# macOS: look in the conda prefix before the SDK, or Geant4Config's
+# find_dependency(EXPAT) reads the SDK's expat.h (2.2.5 < 2.9.0).
+EXTRA_ARGS=()
+if [[ "$(uname)" == "Darwin" ]]; then
+  EXTRA_ARGS+=(-DCMAKE_PREFIX_PATH="${PREFIX}" -DCMAKE_FIND_FRAMEWORK=LAST)
+fi
+
+cmake .. "${EXTRA_ARGS[@]}" \
   -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
   -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_SHARED_LIBS=ON \
