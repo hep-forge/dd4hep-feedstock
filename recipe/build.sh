@@ -22,6 +22,13 @@ if [[ "$(uname)" == "Darwin" ]]; then
   read -r -a CONDA_CMAKE_ARGS <<< "${CMAKE_ARGS}"
   EXTRA_ARGS+=("${CONDA_CMAKE_ARGS[@]}")
   export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+  # DD4hep's build passes conda's LDFLAGS twice, so every link has the
+  # $PREFIX/lib rpath twice. Apple's ld then warns "duplicate -rpath", and
+  # CMake's check_cxx_compiler_flag counts any such warning as a failed
+  # probe: every flag "unsupported", -ftls-model=global-dynamic fatally.
+  # Give the rpath to CMake for the installed files instead.
+  export LDFLAGS="${LDFLAGS//-Wl,-rpath,${PREFIX}\/lib/}"
+  EXTRA_ARGS+=(-DCMAKE_INSTALL_RPATH="${PREFIX}/lib")
 fi
 
 cmake .. "${EXTRA_ARGS[@]}" \
