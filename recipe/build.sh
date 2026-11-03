@@ -15,6 +15,13 @@ cd build
 EXTRA_ARGS=()
 if [[ "$(uname)" == "Darwin" ]]; then
   EXTRA_ARGS+=(-DCMAKE_PREFIX_PATH="${PREFIX}" -DCMAKE_FIND_FRAMEWORK=LAST)
+  # conda's CMAKE_ARGS carry the macOS SDK and toolchain settings; without
+  # them CMake's flag probes fail ("does not support -ftls-model=global-dynamic").
+  # conda-forge's dd4hep on osx-arm64 builds with them, and with the define
+  # below (libc++ otherwise rejects std::from_chars for older deployment targets).
+  read -r -a CONDA_CMAKE_ARGS <<< "${CMAKE_ARGS}"
+  EXTRA_ARGS+=("${CONDA_CMAKE_ARGS[@]}")
+  export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
 cmake .. "${EXTRA_ARGS[@]}" \
