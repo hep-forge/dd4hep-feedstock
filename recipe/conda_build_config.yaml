@@ -40,10 +40,16 @@ root:
 # NB this pins the *ABI*. It only fixes the C++ *dialect* as a side
 # effect (14 defaults to gnu++17); source that requires a particular
 # standard should set CMAKE_CXX_STANDARD explicitly as well.
-c_compiler_version:    # [linux]
+# macOS: the clang (and libc++ headers) conda-forge's ROOT 6.38 was built
+# with. ROOT's interpreter loads std_darwin.modulemap, which names libc++
+# headers by that version's layout; with clang 23's libc++ it stops at
+# "__type_traits/add_lvalue_reference.h not found" (as framel-root did).
+c_compiler_version:
   - 14                       # [linux]
-cxx_compiler_version:  # [linux]
+  - 20                       # [osx]
+cxx_compiler_version:
   - 14                       # [linux]
+  - 20                       # [osx]
 libgcc_version:        # [linux]
   - 14.*                     # [linux]
 libstdcxx_version:     # [linux]
