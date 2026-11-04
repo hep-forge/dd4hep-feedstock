@@ -4,8 +4,12 @@ set -e
 # GCC's constant-merging optimization corrupts embedded/inlined XML tag
 # strings baked into DD4hep's compact-detector-description machinery.
 # conda-forge only discovered this 2026-06-10 (see recipe/patches).
-export CFLAGS="${CFLAGS} -fno-merge-constants"
-export CXXFLAGS="${CXXFLAGS} -fno-merge-constants"
+# GCC only (as conda-forge does): clang warns it is unsupported, and CMake's
+# flag probes then fail on that warning.
+if [[ "$(uname)" != "Darwin" ]]; then
+  export CFLAGS="${CFLAGS} -fno-merge-constants"
+  export CXXFLAGS="${CXXFLAGS} -fno-merge-constants"
+fi
 
 mkdir -p build
 cd build
