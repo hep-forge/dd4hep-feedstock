@@ -26,6 +26,12 @@ if [[ "$(uname)" == "Darwin" ]]; then
   read -r -a CONDA_CMAKE_ARGS <<< "${CMAKE_ARGS}"
   EXTRA_ARGS+=("${CONDA_CMAKE_ARGS[@]}")
   export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+  # ROOT's interpreter (rootcling, and ROOT inside listcomponents) asks a C++
+  # compiler for the system include paths. Without CLING_CXX_PATH it found
+  # Xcode's c++ and the SDK's older libc++ ("__configuration/abi.h not
+  # found" against ROOT's std_darwin.modulemap): use conda's, which matches
+  # the libc++ ROOT was built with.
+  export CLING_CXX_PATH="${CXX}"
   # DDPython's plugins take Python's symbols from the loading process, and
   # listcomponents (which writes each plugin's .components file) is not
   # Python: preload libpython there, as conda-forge does through DD4hep
