@@ -27,11 +27,16 @@ if [[ "$(uname)" == "Darwin" ]]; then
   EXTRA_ARGS+=("${CONDA_CMAKE_ARGS[@]}")
   export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
   # ROOT's interpreter (rootcling, and ROOT inside listcomponents) asks a C++
-  # compiler for the system include paths. Without CLING_CXX_PATH it found
-  # Xcode's c++ and the SDK's older libc++ ("__configuration/abi.h not
-  # found" against ROOT's std_darwin.modulemap): use conda's, which matches
-  # the libc++ ROOT was built with.
-  export CLING_CXX_PATH="${CXX}"
+  # compiler for the C++ system include paths; on the runner it got the SDK's
+  # older libc++ ("__configuration/abi.h not found" against ROOT's
+  # std_darwin.modulemap). CLING_CPPSYSINCL replaces that query
+  # (cling/lib/Interpreter/CIFactory.cpp): give it conda's compiler's answer,
+  # whose libc++ is the one ROOT was built with.
+  CLING_CPPSYSINCL="$(LC_ALL=C ${CXX} -xc++ -E -v /dev/null 2>&1 \
+      | sed -n -e '/^.include/,${' -e '/^ \/.*++/p' -e '}' | tr -d ' ' | paste -sd: -)"
+  export CLING_CPPSYSINCL
+  echo "CLING_CPPSYSINCL=${CLING_CPPSYSINCL}"
+  test -n "${CLING_CPPSYSINCL}"
   # DDPython's plugins take Python's symbols from the loading process, and
   # listcomponents (which writes each plugin's .components file) is not
   # Python: preload libpython there, as conda-forge does through DD4hep
