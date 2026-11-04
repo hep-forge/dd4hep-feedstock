@@ -30,9 +30,10 @@ if [[ "$(uname)" == "Darwin" ]]; then
   # $PREFIX/lib rpath twice. Apple's ld then warns "duplicate -rpath", and
   # CMake's check_cxx_compiler_flag counts any such warning as a failed
   # probe: every flag "unsupported", -ftls-model=global-dynamic fatally.
-  # Give the rpath to CMake for the installed files instead.
+  # Give the rpath to CMake instead, once: for the installed files and for
+  # the build-tree tools the build runs (listcomponents needs libc++ there).
   export LDFLAGS="${LDFLAGS//-Wl,-rpath,${PREFIX}\/lib/}"
-  EXTRA_ARGS+=(-DCMAKE_INSTALL_RPATH="${PREFIX}/lib")
+  EXTRA_ARGS+=(-DCMAKE_INSTALL_RPATH="${PREFIX}/lib" -DCMAKE_BUILD_RPATH="${PREFIX}/lib")
 fi
 
 cmake .. "${EXTRA_ARGS[@]}" \
