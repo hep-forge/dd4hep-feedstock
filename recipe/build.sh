@@ -26,6 +26,14 @@ if [[ "$(uname)" == "Darwin" ]]; then
   read -r -a CONDA_CMAKE_ARGS <<< "${CMAKE_ARGS}"
   EXTRA_ARGS+=("${CONDA_CMAKE_ARGS[@]}")
   export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+  # DDPython's plugins take Python's symbols from the loading process, and
+  # listcomponents (which writes each plugin's .components file) is not
+  # Python: preload libpython there, as conda-forge does through DD4hep
+  # v01-38's DD4HEP_GENERATE_ROOTMAP_EXTRA_ENV. Backported to 1.37's
+  # dd4hep_generate_rootmap; the installed DD4hep.cmake carries it to
+  # dd4hep's consumers.
+  sed -i.bak "s|^\( *\)\"ROOT_LIBRARY_PATH=\${DD4HEP_ROOT_LIBRARY_PATH}\"\$|&\n\1\"DYLD_INSERT_LIBRARIES=${PREFIX}/lib/libpython${PY_VER}.dylib\"|" ../cmake/DD4hep.cmake
+  grep -q "DYLD_INSERT_LIBRARIES=${PREFIX}/lib/libpython${PY_VER}.dylib" ../cmake/DD4hep.cmake
   # DD4hep's build passes conda's LDFLAGS twice, so every link has the
   # $PREFIX/lib rpath twice. Apple's ld then warns "duplicate -rpath", and
   # CMake's check_cxx_compiler_flag counts any such warning as a failed
