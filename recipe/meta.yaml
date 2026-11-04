@@ -30,6 +30,10 @@ source:
     # upstream PR #1645: getpass.getuser() can raise OSError (not just
     # KeyError) on some systems under Python 3.13.
     - patches/0002-fix-getuser-oserror-on-python-3.13.patch
+    # from conda-forge's dd4hep: on macOS `import dd4hep` required
+    # DD4HEP_LIBRARY_PATH in the environment ('DD4HEP_LIBRARY_PATH' KeyError);
+    # it only removes that macOS-only branch
+    - patches/0003-remove-DD4HEP_LIBRARY_PATH-requirement-macos.patch  # [osx]
     # conda-forge patches, adopted verbatim (genuinely useful for hep-forge
     # too, not conda-forge-specific): auto-detect C++ standard from ROOT,
     # drop the overly strict Geant4-vs-DD4hep C++ standard hard-FATAL_ERROR
