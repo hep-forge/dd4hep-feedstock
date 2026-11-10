@@ -78,7 +78,7 @@ requirements:
     # feedstock's own .github/workflows/autoupload.yml adds that channel
     # (scripts/templates/autoupload.yml deliberately does not, most
     # feedstocks don't need it).
-    - root {{ root }}.*
+    - root_base {{ root }}.* cxx{{ root_cxx_standard }}*
     - geant >=10.2.2
     - g4hepem
     - hepmc>=3.2.6 root{{ root_tag }}
@@ -89,7 +89,7 @@ requirements:
     - libboost-devel
     - python
   run:
-    - root {{ root }}.*
+    - {{ pin_compatible('root_base', exact=True) }}
     - geant >=10.2.2
     - g4hepem
     - hepmc>=3.2.6 root{{ root_tag }}

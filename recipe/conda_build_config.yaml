@@ -45,12 +45,16 @@ root:
 # headers by that version's layout; with clang 23's libc++ it stops at
 # "__type_traits/add_lvalue_reference.h not found" (as framel-root did).
 c_compiler_version:
-  - 14                       # [linux]
+  - 16                       # [linux]
   - 20                       # [osx]
 cxx_compiler_version:
-  - 14                       # [linux]
+  - 16                       # [linux]
   - 20                       # [osx]
 libgcc_version:        # [linux]
-  - 14.*                     # [linux]
+  - 16.*                     # [linux]
 libstdcxx_version:     # [linux]
-  - 14.*                     # [linux]
+  - 16.*                     # [linux]
+
+# conda-forge root_base variant (cxx20/cxx23 in its build string)
+root_cxx_standard:
+  - 23
