@@ -49,6 +49,10 @@ source:
     # DD4HEP_LIBRARY_PATH in the environment ('DD4HEP_LIBRARY_PATH' KeyError);
     # it only removes that macOS-only branch
     - patches/0008-remove-DD4HEP_LIBRARY_PATH-requirement-macos.patch  # [osx]
+    # drop Geant4's -std= from the flags DD4hep forwards (Geant4::Interface):
+    # conda-forge's geant4 is C++17 and its -std=c++17 overrode DD4hep's
+    # C++23, so DDG4/DDDigi could not compile podio's C++20 headers
+    - patches/0009-drop-geant4-std-flag.patch
 
 build:
   number: 0

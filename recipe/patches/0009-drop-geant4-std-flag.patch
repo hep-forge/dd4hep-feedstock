@@ -1,0 +1,15 @@
+diff --git a/cmake/DD4hepBuild.cmake b/cmake/DD4hepBuild.cmake
+index de233151..8d6f3b78 100644
+--- a/cmake/DD4hepBuild.cmake
++++ b/cmake/DD4hepBuild.cmake
+@@ -891,6 +891,10 @@ MACRO(DD4HEP_SETUP_GEANT4_TARGETS)
+     # Geant4 CXX Flags are a string with quotes, not a list, so we need to convert to a list...
+     # Geant4::10.2.2 at least, not in 10.5 (check where it switches)
+     string(REPLACE " " ";" Geant4_Flags ${Geant4_CXX_FLAGS} ${Geant4_CXX_FLAGS_${CMAKE_BUILD_TYPE}})
++    # Not Geant4's -std= (conda-forge's geant4 is built as C++17): placed after
++    # DD4hep's own standard it would override it, and podio/EDM4hep headers
++    # need C++20. DD4hep's CMAKE_CXX_STANDARD decides.
++    list(FILTER Geant4_Flags EXCLUDE REGEX "^-std=")
+ 
+     #Geant4_DEFINITIONS already include -D, we have to get rid of that so we can join things when creating dictionaries
+     SET(G4_DEF_TEMP "")
